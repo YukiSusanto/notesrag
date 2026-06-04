@@ -3,7 +3,7 @@
  * 优先 Vercel Blob（生产环境），本地开发降级到 /tmp/
  */
 import { put, del } from "@vercel/blob";
-import { writeFile, unlink } from "fs/promises";
+import { writeFile, unlink, mkdir } from "fs/promises";
 import * as path from "path";
 import { randomUUID } from "crypto";
 
@@ -33,6 +33,7 @@ export async function storeFile(
   }
 
   // 降级：本地 /tmp/ 存储
+  await mkdir("/tmp/notes-rag", { recursive: true });
   const localPath = path.join("/tmp/notes-rag", `${randomUUID()}-${filename}`);
   await writeFile(localPath, buffer);
   return { url: localPath, pathname: localPath };
