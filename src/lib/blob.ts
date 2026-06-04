@@ -24,15 +24,21 @@ export async function storeFile(
   contentType: string
 ): Promise<{ url: string; pathname: string }> {
   if (hasBlob()) {
-    const ext = path.extname(filename);
-    const result = await put(`${randomUUID()}${ext}`, buffer, {
-      access: "private",
-      contentType,
-    });
-    return { url: result.url, pathname: result.pathname };
+    try {
+      const ext = path.extname(filename);
+      const result = await put(`${randomUUID()}${ext}`, buffer, {
+        access: "private",
+        contentType,
+      });
+      console.log("[blob] ✅ 存入 Blob:", result.pathname);
+      return { url: result.url, pathname: result.pathname };
+    } catch (err: any) {
+      console.error("[blob] ❌ Blob 写入失败，降级 /tmp/:", err.message);
+    }
   }
 
   // 降级：本地 /tmp/ 存储
+  console.log("[blob] 📁 使用 /tmp/ 存储");
   await mkdir("/tmp/notes-rag", { recursive: true });
   const localPath = path.join("/tmp/notes-rag", `${randomUUID()}-${filename}`);
   await writeFile(localPath, buffer);
