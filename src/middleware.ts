@@ -5,11 +5,10 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const PASSWORD = process.env.ACCESS_PASSWORD;
-
 export function middleware(req: NextRequest) {
-  // 未设置密码则跳过
-  if (!PASSWORD) return NextResponse.next();
+  // 运行时读取密码（避免 Vercel 构建时固化）
+  const pwd = process.env.ACCESS_PASSWORD;
+  if (!pwd) return NextResponse.next();
 
   // 登录页 + 登录接口放行
   if (
@@ -29,7 +28,7 @@ export function middleware(req: NextRequest) {
 
   // 检查 cookie
   const auth = req.cookies.get("auth_token");
-  if (auth?.value === PASSWORD) return NextResponse.next();
+  if (auth?.value === pwd) return NextResponse.next();
 
   // API 请求返回 401
   if (req.nextUrl.pathname.startsWith("/api/")) {
