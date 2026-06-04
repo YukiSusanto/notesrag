@@ -1,0 +1,39 @@
+{
+  "name": "notes-rag",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "npx kill-port 3000 2>/dev/null; next dev",
+    "build": "next build",
+    "start": "next start",
+    "setup-db": "node --import=tsx --env-file=.env.local src/lib/setup-db.ts",
+    "kill": "npx kill-port 3000",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@ai-sdk/deepseek": "^2.0.35",
+    "@ai-sdk/openai": "^3.0.67",
+    "@vercel/blob": "^2.4.0",
+    "@vercel/postgres": "^0.10.0",
+    "@xenova/transformers": "^2.17.2",
+    "ai": "^6.0.195",
+    "next": "16.2.6",
+    "pdfjs-dist": "^6.0.227",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "kill-port": "^2.0.1",
+    "tailwindcss": "^4",
+    "tsx": "^4.22.4",
+    "typescript": "^5"
+  }
+}
