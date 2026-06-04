@@ -11,8 +11,13 @@ export function middleware(req: NextRequest) {
   // 未设置密码则跳过
   if (!PASSWORD) return NextResponse.next();
 
-  // 登录页自己放行
-  if (req.nextUrl.pathname.startsWith("/login")) return NextResponse.next();
+  // 登录页 + 登录接口放行
+  if (
+    req.nextUrl.pathname.startsWith("/login") ||
+    req.nextUrl.pathname.startsWith("/api/auth")
+  ) {
+    return NextResponse.next();
+  }
 
   // 公开资源放行
   if (
