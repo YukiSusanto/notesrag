@@ -1,12 +1,11 @@
 "use client";
 
 import { Suspense, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
 function LoginForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const router = useRouter();
   const searchParams = useSearchParams();
   const from = searchParams.get("from") || "/";
 
@@ -21,7 +20,7 @@ function LoginForm() {
     });
 
     if (res.ok) {
-      router.push(from);
+      window.location.href = from;
     } else {
       setError("密码错误");
     }
