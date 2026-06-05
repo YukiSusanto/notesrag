@@ -37,14 +37,14 @@ export async function POST(req: NextRequest) {
     // 2. 组装 prompt
     const citationPrompt = getCitationPrompt();
     const chunksContext = formatChunksForPrompt(
-      chunks.map((c) => ({
-        index: c.id,
+      chunks.map((c, i) => ({
+        index: i + 1,           // 顺号序号，不用数据库 ID
         filename: c.filename,
         content: c.content,
       }))
     );
 
-    const systemPrompt = `你是一个个人知识库助手。请仅基于以下笔记片段回答问题。
+    const systemPrompt = `你是一个个人知识库助手。请仅基于以下笔记片段回答问题。如果你是引用笔记，请在引用的结尾处标注来源编号，例如：<cite id="1">会议强调了"降本增效"的重要性</cite>，其中数字对应上述笔记片段的编号。
 如果笔记中没有相关信息，请明确说"根据你的笔记，未找到相关信息"，不要编造任何内容。
 
 关于图表与数据：如果用户询问具体数值或趋势，但检索到的笔记片段中只有关于图表的笼统描述而无具体数据，请诚实地回答"笔记中存在相关的图表，但受限于文本检索，无法提取具体数值"。不要根据常识或上下文盲目推测数据。
@@ -57,10 +57,10 @@ ${chunksContext}
 
 问题：${question}`;
 
-    // 3. 引用元数据
+    // 3. 引用元数据（序号 → chunk 数据映射）
     const citationsJson = JSON.stringify(
-      chunks.map((c) => ({
-        id: c.id,
+      chunks.map((c, i) => ({
+        id: i + 1,            // 与 prompt 中序号一致
         filename: c.filename,
         content: c.content,
         chunk_index: c.chunk_index,
