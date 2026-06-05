@@ -9,6 +9,8 @@ import { embedText } from "@/lib/embed";
 import { retrieveChunks } from "@/lib/retrieve";
 import { getCitationPrompt, formatChunksForPrompt } from "@/lib/citation";
 
+export const maxDuration = 30; // Vercel Hobby 上限
+
 const LLM_MODEL = "deepseek-chat";
 const TIMEOUT_MS = 25_000; // Vercel Hobby 30s 上限，留 5s buffer
 

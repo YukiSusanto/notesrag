@@ -9,7 +9,7 @@ import { chunkText } from "@/lib/chunker";
 import { embedBatch } from "@/lib/embed";
 import { sql } from "@/lib/db";
 
-export const maxDuration = 60; // Vercel Pro 上限，Hobby 30s（取保守值）
+export const maxDuration = 30; // Vercel Hobby 上限
 
 const ALLOWED_TYPES = [
   "text/markdown",
@@ -49,8 +49,8 @@ export async function POST(req: NextRequest) {
     // 3. 存笔记元数据（含 blob_path 用于删除时清理）
     const ext = file.name.toLowerCase().split(".").pop() || "txt";
     const noteResult = await sql`
-      INSERT INTO notes (filename, content, format, blob_path)
-      VALUES (${file.name}, ${parseResult.text}, ${ext}, ${blobPath})
+      INSERT INTO notes (filename, content, format, blob_path, folder)
+      VALUES (${file.name}, ${parseResult.text}, ${ext}, ${blobPath}, '未分类')
       RETURNING id
     `;
     const noteId = noteResult.rows[0].id;

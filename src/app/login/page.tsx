@@ -54,7 +54,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <main className="min-h-screen bg-gray-50 flex items-center justify-center">
+    <main className="h-full bg-gray-50 flex items-center justify-center">
       <Suspense fallback={<p>加载中...</p>}>
         <LoginForm />
       </Suspense>

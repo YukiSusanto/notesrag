@@ -23,12 +23,15 @@ export async function initDatabase() {
       content     TEXT NOT NULL,
       format      TEXT NOT NULL,
       blob_path   TEXT,
+      folder      TEXT DEFAULT '未分类',
       created_at  TIMESTAMPTZ DEFAULT NOW()
     )
   `;
 
   // 迁移：旧表可能没有 blob_path 列
   await sql`ALTER TABLE notes ADD COLUMN IF NOT EXISTS blob_path TEXT`;
+  // 迁移：旧表可能没有 folder 列
+  await sql`ALTER TABLE notes ADD COLUMN IF NOT EXISTS folder TEXT DEFAULT '未分类'`;
 
   // 用裸字符串拼 SQL（vector(N) 不能用 bind 参数）
   const dim = getDim();

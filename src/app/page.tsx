@@ -2,7 +2,6 @@
 
 import { useState, useRef, useCallback } from "react";
 import Link from "next/link";
-import NavBar from "@/components/NavBar";
 import ChatInput from "@/components/ChatInput";
 import ChatMessage from "@/components/ChatMessage";
 import { CitationData } from "@/components/CitationBadge";
@@ -136,9 +135,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gray-50 flex flex-col">
-      <NavBar />
-
+    <main className="h-full flex flex-col bg-gray-50">
       {/* 消息区 */}
       <div className="flex-1 overflow-y-auto px-4 py-6 max-w-3xl mx-auto w-full">
         {messages.length === 0 && (
