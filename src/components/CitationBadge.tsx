@@ -29,7 +29,7 @@ export default function CitationBadge({
   const citeText = typeof children === "string" ? children : "";
 
   return (
-    <span className="inline relative">
+    <span className="inline">
       <sup
         onClick={() => setOpen(!open)}
         className="text-blue-600 cursor-pointer hover:underline font-bold ml-0.5 text-xs"
@@ -39,22 +39,30 @@ export default function CitationBadge({
       </sup>
 
       {open && cite && (
-        <span className="absolute bottom-full left-0 mb-2 w-80 bg-white border border-gray-200 rounded-lg shadow-lg p-3 z-50 text-sm block">
-          <span className="flex justify-between items-center mb-2">
-            <span className="font-medium text-gray-700">
-              📄 {cite.filename}
+        <>
+          {/* 遮罩层 */}
+          <span
+            className="fixed inset-0 z-40"
+            onClick={() => setOpen(false)}
+          />
+          {/* 右侧面板 */}
+          <span className="fixed top-0 right-0 w-96 h-full bg-white border-l border-gray-200 shadow-2xl z-50 p-6 overflow-y-auto text-sm block">
+            <span className="flex justify-between items-center mb-4">
+              <span className="font-medium text-gray-800 text-base">
+                📄 {cite.filename}
+              </span>
+              <button
+                onClick={() => setOpen(false)}
+                className="text-gray-400 hover:text-gray-600 text-lg"
+              >
+                ✕
+              </button>
             </span>
-            <button
-              onClick={() => setOpen(false)}
-              className="text-gray-400 hover:text-gray-600 text-xs"
-            >
-              ✕
-            </button>
+            <span className="block text-gray-600 whitespace-pre-wrap text-sm leading-relaxed">
+              {highlightText(cite.content, citeText)}
+            </span>
           </span>
-          <span className="block text-gray-600 max-h-40 overflow-y-auto whitespace-pre-wrap text-xs leading-relaxed">
-            {highlightText(cite.content, citeText)}
-          </span>
-        </span>
+        </>
       )}
     </span>
   );
